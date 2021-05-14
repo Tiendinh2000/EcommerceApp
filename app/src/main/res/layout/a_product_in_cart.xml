@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/border_cart"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_productInCart"
+        android:layout_width="111dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/name_productInCart"
+        android:layout_width="146dp"
+        android:layout_height="72dp"
+        android:gravity="center"
+        android:text="NAME"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintStart_toEndOf="@+id/image_productInCart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/price_productInCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10000.00"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/orange"
+        app:layout_constraintBottom_toBottomOf="@+id/image_productInCart"
+        app:layout_constraintStart_toEndOf="@+id/image_productInCart" />
+
+    <TextView
+        android:id="@+id/totalPrice_productInCart"
+        android:layout_width="68dp"
+        android:layout_height="116dp"
+        android:gravity="center"
+        android:text="Total Price"
+        android:textColor="@color/orange"
+        android:textSize="15sp"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_addQuantity"
+        android:layout_width="31dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border"
+        app:layout_constraintEnd_toStartOf="@+id/totalPrice_productInCart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/add" />
+
+    <ImageButton
+        android:id="@+id/btn_removeQuantity"
+        android:layout_width="31dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="@+id/totalPrice_productInCart"
+        app:layout_constraintEnd_toStartOf="@+id/totalPrice_productInCart"
+        app:srcCompat="@drawable/remove" />
+
+    <TextView
+        android:id="@+id/tv_quantity"
+        android:layout_width="73dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center"
+        android:text="Quantity"
+        android:textColor="@color/orange"
+        app:layout_constraintBottom_toTopOf="@+id/btn_removeQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/totalPrice_productInCart"
+        app:layout_constraintTop_toBottomOf="@+id/btn_addQuantity" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
