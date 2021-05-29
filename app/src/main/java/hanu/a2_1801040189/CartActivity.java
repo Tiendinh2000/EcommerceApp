@@ -31,56 +31,65 @@ import hanu.a2_1801040189.models.Product;
 public class CartActivity extends AppCompatActivity {
 
     private List list = new ArrayList();
+    int totalAllprice;
+
     CartAdapter adapter;
     RecyclerView recyclerView;
     public CartManager DB;
     CartCursorWrapper cursor;
-    TextView tv_allPrice;
+    TextView tv_allPrice, tv_emptyCart;
 
-    int totalAllprice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         tv_allPrice = findViewById(R.id.allPrice);
+        tv_emptyCart = findViewById(R.id.tv_emptyCart);
 
 
         setList();
         setAdapter(list);
         totalAllprice = getTotalAllPrice(list);
-        tv_allPrice.setText(String.valueOf(totalAllprice));
+        //check if there is nothing in cart, display TextView
+        if (totalAllprice == 0) {
+            tv_emptyCart.setAlpha(1);
+        }
+
+        tv_allPrice.setText("$ " + String.valueOf(totalAllprice));
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
     }
 
     /**
-     *
+     * BroadcastReceiver : to receive message(increase or decrease the price) from CartAdapter
      */
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            // receive value:  add or minus a product's cost
-            String minusPrice= intent.getStringExtra("MinusPrice");
+            // receive message value:  add or minus a product's cost
+            String minusPrice = intent.getStringExtra("MinusPrice");
             String addPrice = intent.getStringExtra("addPrice");
 
             // minus cost of product has been removed quantity
-            if(minusPrice!=null){
-                totalAllprice-=Integer.parseInt(minusPrice);
-                tv_allPrice.setText(String.valueOf(totalAllprice));
+            if (minusPrice != null) {
+                totalAllprice -= Integer.parseInt(minusPrice);
+                tv_allPrice.setText("$ " + String.valueOf(totalAllprice));
             }
-            // minus cost of product has been add quantity
-            if(addPrice!=null){
-                totalAllprice+=Integer.parseInt(addPrice);
-                tv_allPrice.setText(String.valueOf(totalAllprice));;
+            // add cost of product has been add quantity
+            if (addPrice != null) {
+                totalAllprice += Integer.parseInt(addPrice);
+                tv_allPrice.setText("$ " + String.valueOf(totalAllprice));
+                ;
             }
 
         }
     };
 
     /**
-     *
+     * Set list from SQLite
      */
     private void setList() {
         DB = new CartManager(this.getApplicationContext());
@@ -89,8 +98,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param l
+     * @param l : set adapter for recycleView with a List of Product
      */
     private void setAdapter(List l) {
         adapter = new CartAdapter(l);
@@ -101,9 +109,8 @@ public class CartActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param l
-     * @return
+     * @param l : A list of products
+     * @return total price of All Product contained in this list
      */
     private int getTotalAllPrice(List<Product> l) {
         int result = 0;

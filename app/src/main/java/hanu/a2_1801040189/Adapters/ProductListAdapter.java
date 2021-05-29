@@ -4,12 +4,14 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
+import hanu.a2_1801040189.ProductDetailActivity;
 import hanu.a2_1801040189.R;
 import hanu.a2_1801040189.dbs.CartCursorWrapper;
 import hanu.a2_1801040189.dbs.CartManager;
@@ -71,8 +75,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         ImageButton add;
         TextView name, category, price;
-        ImageView thumb;
+        ImageButton thumb;
         Context context;
+
+        ProgressBar progressBar;
 
         public ProductHolder(@NonNull View itemView, Context context) {
             super(itemView);
@@ -81,7 +87,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             name = itemView.findViewById(R.id.product_name);
             thumb = itemView.findViewById(R.id.product_thumb);
             add = itemView.findViewById(R.id.btn_add_product);
-DB= new CartManager(context);
+            DB = new CartManager(context);
+
+            progressBar = itemView.findViewById(R.id.PB);
         }
 
 
@@ -90,8 +98,28 @@ DB= new CartManager(context);
             int pr = (int) p.getPrice();
             name.setText(p.getName());
             price.setText(" $ " + String.valueOf(pr));
+            Picasso.get().load(p.getImage()).into(thumb, new com.squareup.picasso.Callback() {
+                @Override
+                public void onSuccess() {
+                    if (progressBar != null) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
 
-            Picasso.get().load(p.getImage()).into(thumb);
+                @Override
+                public void onError(Exception e) {
+
+                }
+            });
+            thumb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, ProductDetailActivity.class);
+                    i.putExtra("product", p);
+                    context.startActivity(i);
+                    Log.d("click", "" + p.getId());
+                }
+            });
 
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,7 +133,7 @@ DB= new CartManager(context);
 
                         new AlertDialog.Builder(context)
                                 .setTitle("Add Successfully!")
-                                .setMessage("Add 1 "+p.getName().substring(0,15)+"... more into your cart!")
+                                .setMessage("Add 1 " + p.getName().substring(0, 15) + "... more into your cart!")
                                 .setNeutralButton("OK", null)
                                 .setIcon(android.R.drawable.ic_dialog_info)
                                 .show();
@@ -113,7 +141,7 @@ DB= new CartManager(context);
 
                         new AlertDialog.Builder(context)
                                 .setTitle("Add to your Cart")
-                                .setMessage(p.getName().substring(0,10)+"... is not existed in your Cart! \r\nAre you sure you want to add this product?")
+                                .setMessage(p.getName().substring(0, 10) + "... is not existed in your Cart! \r\nAre you sure you want to add this product?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         boolean edit = DB.addProduct(p);
@@ -129,6 +157,11 @@ DB= new CartManager(context);
             });
         }
 
+        /**
+         * @param id:  check if the
+         * @param list
+         * @return
+         */
         private Product checkExisted(int id, List<Product> list) {
             for (Product p : list) {
                 if (p.getId() == id)

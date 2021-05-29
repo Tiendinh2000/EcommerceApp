@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public List<Product> getProductsListInCart(){
     CartCursorWrapper cursorWrapper = new CartCursorWrapper(cursor);
     return cursorWrapper.getProducts();
 }
+
     public Boolean addProduct(Product p) {
 
         ContentValues contentValues = new ContentValues();
@@ -73,7 +75,8 @@ public List<Product> getProductsListInCart(){
         contentValues.put(DBSchema.CartTable.Cols.PRICE, p.getPrice());
         contentValues.put(DBSchema.CartTable.Cols.QUAN , quantity-1);
         long result = db.update(DBSchema.CartTable.TABLENAME, contentValues, "id=?", new String[]{String.valueOf(p.getId())});
-        //delete when quantity=1
+        //delete when quantity=0
+
         ResetDeleteProduct();
         if (result == 1)
             return false;
@@ -88,5 +91,17 @@ public List<Product> getProductsListInCart(){
     public Cursor getData() {
         Cursor cursor = db.rawQuery("Select * from cart", null);
         return cursor;
+    }
+
+    public int checkQuantity(int id){
+        String sql = "Select * FROM cart WHERE id="+id;
+
+        try {
+            Cursor cursor = db.rawQuery(sql, null);
+            CartCursorWrapper wrapper = new CartCursorWrapper(cursor);
+            Product p = wrapper.getProduct();
+           return p.getQuantity();
+        } catch (NullPointerException e){
+            return 0;}
     }
 }

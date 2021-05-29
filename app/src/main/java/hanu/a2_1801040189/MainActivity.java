@@ -43,46 +43,16 @@ public class MainActivity extends AppCompatActivity {
         RESTLoader task = (RESTLoader) new RESTLoader(new RESTLoader.AsyncResponse() {
             @Override
             public void processFinish(List<Product> output) {
-                Log.d("OUTPUT", "_" + output.toString());
+                Log.d("input",""+output.toString());
+                // output after the process is a List contains Products
                 recyclerView = findViewById(R.id.rv_productList);
                 adapter = new ProductListAdapter(output);
                 btn_return = findViewById(R.id.btn_return);
                 setAdapter(adapter, recyclerView);
 
              // Find keyword and search
-                input_search.setOnKeyListener(new View.OnKeyListener() {
-                    @Override
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                            switch (keyCode) {
+              SearchOnKeyBoard(output);
 
-                                case KeyEvent.KEYCODE_DPAD_CENTER:
-                                case KeyEvent.KEYCODE_ENTER:
-                                    String keywords = input_search.getText().toString();
-                                    List<Product> l = getListKeyWord(keywords, output);
-
-                                    ProductListAdapter a = new ProductListAdapter(l);
-                                    btn_return.setVisibility(View.VISIBLE);
-                                    btn_return.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            input_search.setText("");
-                                            ProductListAdapter reset = new ProductListAdapter(output);
-                                            setAdapter(reset, recyclerView);
-                                            btn_return.setVisibility(View.GONE);
-                                        }
-                                    });
-
-                                    setAdapter(a, recyclerView);
-                                    return true;
-                                default:
-                                    break;
-                            }
-                        }
-                        return false;
-
-                    }
-                });
             }
         },MainActivity.this).execute();
     }
@@ -111,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param a : Adapter
      * @param r : RecyleView
-     *         setDapter: set adapter and GridLayout with spanCount for a RecyclerView
+     *         setDapter: set adapter and GridLayout with spanCount = 2 for a RecyclerView
      */
     private void setAdapter(ProductListAdapter a, RecyclerView r) {
         r.setAdapter(a);
@@ -137,5 +107,44 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
+    /**\
+     *
+     * @param listOfProduct: a list contains products
+     */
+    public void SearchOnKeyBoard(List<Product> listOfProduct){
+        input_search.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            String keywords = input_search.getText().toString();
+                            List<Product> l = getListKeyWord(keywords, listOfProduct);
+
+                            ProductListAdapter a = new ProductListAdapter(l);
+                            btn_return.setVisibility(View.VISIBLE);
+                            btn_return.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    input_search.setText("");
+                                    ProductListAdapter reset = new ProductListAdapter(listOfProduct);
+                                    setAdapter(reset, recyclerView);
+                                    btn_return.setVisibility(View.GONE);
+                                }
+                            });
+
+                            setAdapter(a, recyclerView);
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+
+            }
+        });
+    }
 
 }

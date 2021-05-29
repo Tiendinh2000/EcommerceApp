@@ -24,6 +24,7 @@ import hanu.a2_1801040189.models.Product;
 public class RESTLoader extends AsyncTask<String, Void, String> {
 
     private static final String URL = "https://mpr-cart-api.herokuapp.com/products";
+    private static final String URL1 = "https://60b1bd1e62ab150017ae12e1.mockapi.io/api/mycart";
     ProgressDialog pd;
     Context context;
 
@@ -38,13 +39,14 @@ public class RESTLoader extends AsyncTask<String, Void, String> {
         this.context = context;
     }
 
+
     @Override
     protected String doInBackground(String... strings) {
         URL url;
         HttpURLConnection urlConnection;
 
         try {
-            url = new URL(URL);
+            url = new URL(URL1);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.connect();
             InputStream is = urlConnection.getInputStream();
@@ -89,15 +91,18 @@ public class RESTLoader extends AsyncTask<String, Void, String> {
                 int id = o1.getInt("id");
                 String name = o1.getString("name");
                 String thumb = o1.getString("thumbnail");
+                String cate = o1.getString("category");
                 int price = o1.getInt("unitPrice");
+                String description = o1.getString("description");
 
-                Product f = new Product(id,name,thumb,price);
+                Product f = new Product(id,name,thumb,cate,price,description);
                 count++;
                 list.add(f);
 
 
             }
 
+            // after Async Process, Output is a List of Product
             delegate.processFinish(list);
 
         } catch (JSONException e) {

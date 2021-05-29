@@ -28,7 +28,6 @@ import hanu.a2_1801040189.models.Product;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
-    LayoutInflater inflater;
     private List<Product> list;
 
     public CartAdapter(List list) {
@@ -131,11 +130,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
         }
 
+        /**
+         *
+         * @return total current quantity of A product has been added
+         */
         private int getCurrentQuantity() {
             int currentQuantity = Integer.parseInt(quantity.getText().toString());
             return currentQuantity;
         }
 
+        /**
+         *
+         * @return total current price of A product
+         */
         private int getCurrentTotalPrice() {
             String get = totalPrice.getText().toString();
             int currentQuantity = Integer.parseInt(get.substring(3, get.length()));
@@ -150,6 +157,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
+
+        /**
+         * BroadcastReceiver : used to transit message from Adapter. The message is increase or decrease totalPrice
+         * @param name : name of message
+         * @param value : value need to be transited
+         *
+         */
 
         private void sendLocalData(String name,String value){
             Intent intent = new Intent("custom-message");

@@ -18,13 +18,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/product_thumb"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+
+
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/PB"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="153dp"
