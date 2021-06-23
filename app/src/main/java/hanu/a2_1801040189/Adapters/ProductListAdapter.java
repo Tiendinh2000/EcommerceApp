@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -19,14 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.List;
 
 import hanu.a2_1801040189.ProductDetailActivity;
 import hanu.a2_1801040189.R;
-import hanu.a2_1801040189.dbs.CartCursorWrapper;
-import hanu.a2_1801040189.dbs.CartManager;
-import hanu.a2_1801040189.dbs.DBHelper;
+import hanu.a2_1801040189.data.dbs.CartCursorWrapper;
+import hanu.a2_1801040189.data.dbs.CartManager;
 import hanu.a2_1801040189.models.Product;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ProductHolder> implements View.OnClickListener {
@@ -124,32 +121,28 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (checkExisted(p.getId(), DB.getProductsListInCart()) != null) {
-
-                        Product productInCart = checkExisted(p.getId(), DB.getProductsListInCart());
-                        int currenQuantity = productInCart.getQuantity();
-                        boolean edit = DB.AddProductQuantity(productInCart, currenQuantity);
-
-                        new AlertDialog.Builder(context)
-                                .setTitle("Add Successfully!")
-                                .setMessage("Add 1 " + p.getName().substring(0, 15) + "... more into your cart!")
-                                .setNeutralButton("OK", null)
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .show();
-                    } else {
-
+                    int currentQuan = DB.checkQuantity(p.getId());
+                    if(currentQuan==0){
+                        DB.addProduct(p);
+                    new AlertDialog.Builder(context)
+                            .setTitle("Add Successfully!")
+                            .setMessage("Add 1 " + p.getName().substring(0, 15) + "... more into your cart!")
+                            .setNeutralButton("OK", null)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .show();}
+                    else {
                         new AlertDialog.Builder(context)
                                 .setTitle("Add to your Cart")
                                 .setMessage(p.getName().substring(0, 10) + "... is not existed in your Cart! \r\nAre you sure you want to add this product?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        boolean edit = DB.addProduct(p);
+                                        boolean edit = DB.addOneMoreProduct(p.getId());
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, null)
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
+
 
                     }
 

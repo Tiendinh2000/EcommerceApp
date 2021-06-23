@@ -98,7 +98,7 @@
 
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btn_check_out"
             android:layout_width="32dp"
             android:layout_height="76dp"
 

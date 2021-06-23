@@ -1,4 +1,4 @@
-package hanu.a2_1801040189.dbs;
+package hanu.a2_1801040189.data.dbs;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
@@ -25,10 +25,9 @@ public class CartCursorWrapper extends CursorWrapper {
         String thumb = getString(getColumnIndex(DBSchema.CartTable.Cols.THUMB));
         int price = getInt(getColumnIndex(DBSchema.CartTable.Cols.PRICE));
         int quan = getInt(getColumnIndex(DBSchema.CartTable.Cols.QUAN));
+
        Product p = new Product(id,name,thumb,price,quan);
-
         moveToNext();
-
         return p;
     }
 
@@ -43,4 +42,12 @@ public class CartCursorWrapper extends CursorWrapper {
         return list;
     }
 
+
+    public int getQuantity(){
+        if (isAfterLast()) {
+            return 0;
+        }
+        int quan = getInt(getColumnIndex(DBSchema.CartTable.Cols.QUAN));
+        return quan;
+    }
 }

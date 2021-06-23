@@ -1,16 +1,10 @@
-package hanu.a2_1801040189.dbs;
+package hanu.a2_1801040189.data.dbs;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-
-import java.util.List;
-
-import hanu.a2_1801040189.models.Product;
 
 public class DBHelper extends SQLiteOpenHelper {
 

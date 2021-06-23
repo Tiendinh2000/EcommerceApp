@@ -1,4 +1,4 @@
-package hanu.a2_1801040189.dbs;
+package hanu.a2_1801040189.data.dbs;
 
 public class DBSchema {
 

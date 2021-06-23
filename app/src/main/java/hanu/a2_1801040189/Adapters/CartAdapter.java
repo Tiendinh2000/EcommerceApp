@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import hanu.a2_1801040189.CartActivity;
 import hanu.a2_1801040189.R;
-import hanu.a2_1801040189.dbs.CartManager;
-import hanu.a2_1801040189.dbs.DBHelper;
+import hanu.a2_1801040189.data.dbs.CartManager;
 import hanu.a2_1801040189.models.Product;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
@@ -96,9 +93,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
             addQuantity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int currentQuan = getCurrentQuantity();
+                    int currentQuan = DB.checkQuantity(p.getId());
                     int currenTotalPrice = getCurrentTotalPrice();
-                    boolean add = DB.AddProductQuantity(p, currentQuan);
+                    boolean add = DB.addOneMoreProduct(p.getId());
                     quantity.setText(String.valueOf(currentQuan + 1));
                     int newTotal=currenTotalPrice + pr;
                     totalPrice.setText(" $ " + String.valueOf(newTotal));
@@ -111,13 +108,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
             removeQuantity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int currentQuan = getCurrentQuantity();
+                    int currentQuan = DB.checkQuantity(p.getId());
                     int currenTotalPrice = getCurrentTotalPrice();
 
                     if (currentQuan == 0) {
                         alertDialog();
                     } else {
-                        boolean minus = DB.RemoveProductQuantity(p, currentQuan);
+                        boolean minus = DB.removeOneProduct(p.getId());
                         quantity.setText(String.valueOf(currentQuan - 1));
                         totalPrice.setText(" $ " + String.valueOf(currenTotalPrice - pr));
                         String information = String.valueOf(pr);

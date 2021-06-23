@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 import hanu.a2_1801040189.Adapters.ProductListAdapter;
 import hanu.a2_1801040189.models.Product;
 
-public class MainActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity {
 
 
     private ProductListAdapter adapter;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     EditText input_search;
     RecyclerView recyclerView;
 
+    ImageView i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +45,18 @@ public class MainActivity extends AppCompatActivity {
         RESTLoader task = (RESTLoader) new RESTLoader(new RESTLoader.AsyncResponse() {
             @Override
             public void processFinish(List<Product> output) {
-                Log.d("input",""+output.toString());
+                Log.d("input", "" + output.toString());
                 // output after the process is a List contains Products
                 recyclerView = findViewById(R.id.rv_productList);
                 adapter = new ProductListAdapter(output);
                 btn_return = findViewById(R.id.btn_return);
                 setAdapter(adapter, recyclerView);
 
-             // Find keyword and search
-              SearchOnKeyBoard(output);
+                // Find keyword and search
+                SearchOnKeyBoard(output);
 
             }
-        },MainActivity.this).execute();
+        }, ProductListActivity.this).execute();
     }
 
     @Override
@@ -66,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.btn_Cart:
-                Intent i = new Intent(this,CartActivity.class);
+                Intent i = new Intent(this, CartActivity.class);
                 this.startActivity(i);
                 break;
             default:
@@ -78,10 +80,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param a : Adapter
      * @param r : RecyleView
-     *         setDapter: set adapter and GridLayout with spanCount = 2 for a RecyclerView
+     *          setDapter: set adapter and GridLayout with spanCount = 2 for a RecyclerView
      */
     private void setAdapter(ProductListAdapter a, RecyclerView r) {
         r.setAdapter(a);
@@ -90,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param key : keywords are searched
+     * @param key  : keywords are searched
      * @param list : list in which keyword appear
      * @return result
      */
@@ -100,18 +100,19 @@ public class MainActivity extends AppCompatActivity {
 
         for (Product p : list) {
 
-            if (p.getName().contains(key)  || String.valueOf(p.getPrice()).contains(key)) {
+            if (p.getName().contains(key) || String.valueOf(p.getPrice()).contains(key)) {
                 result.add(p);
             }
         }
         return result;
     }
 
-    /**\
+    /**
+     * \
      *
      * @param listOfProduct: a list contains products
      */
-    public void SearchOnKeyBoard(List<Product> listOfProduct){
+    public void SearchOnKeyBoard(List<Product> listOfProduct) {
         input_search.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

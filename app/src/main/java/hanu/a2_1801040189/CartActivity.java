@@ -11,21 +11,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import hanu.a2_1801040189.Adapters.CartAdapter;
-import hanu.a2_1801040189.dbs.CartCursorWrapper;
-import hanu.a2_1801040189.dbs.CartManager;
-import hanu.a2_1801040189.dbs.DBHelper;
+import hanu.a2_1801040189.data.dbs.CartCursorWrapper;
+import hanu.a2_1801040189.data.dbs.CartManager;
 import hanu.a2_1801040189.models.Product;
 
 public class CartActivity extends AppCompatActivity {
@@ -38,7 +35,7 @@ public class CartActivity extends AppCompatActivity {
     public CartManager DB;
     CartCursorWrapper cursor;
     TextView tv_allPrice, tv_emptyCart;
-
+    ImageButton btn_checkOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +43,7 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         tv_allPrice = findViewById(R.id.allPrice);
         tv_emptyCart = findViewById(R.id.tv_emptyCart);
-
+        btn_checkOut = findViewById(R.id.btn_check_out);
 
         setList();
         setAdapter(list);
@@ -60,6 +57,13 @@ public class CartActivity extends AppCompatActivity {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
+
+        btn_checkOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+            }
+        });
     }
 
     /**
@@ -133,7 +137,7 @@ public class CartActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.btn_productList:
-                Intent i = new Intent(this, MainActivity.class);
+                Intent i = new Intent(this, ProductListActivity.class);
                 this.startActivity(i);
                 break;
             default:

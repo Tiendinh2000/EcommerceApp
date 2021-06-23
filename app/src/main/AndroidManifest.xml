@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCartVer11">
-        <activity android:name=".ProductDetailActivity"></activity>
+        <activity android:name=".ProductListActivity"></activity>
+        <activity android:name=".CheckOutActivity" />
+        <activity android:name=".ProductDetailActivity" />
         <activity android:name=".CartActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AuthenticationActivity"
             android:windowSoftInputMode="adjustPan">
             >
             <intent-filter>

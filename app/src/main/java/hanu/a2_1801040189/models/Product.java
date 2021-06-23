@@ -94,6 +94,7 @@ public class Product implements Serializable {
         this.category = category;
     }
 
+
     @Override
     public String toString() {
         return "Product{" +
@@ -101,7 +102,9 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", price=" + price +
+                ", category='" + category + '\'' +
                 ", quantity=" + quantity +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
