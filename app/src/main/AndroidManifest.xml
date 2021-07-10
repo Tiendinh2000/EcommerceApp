@@ -11,17 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCartVer11">
-        <activity android:name=".ProductListActivity"></activity>
-        <activity android:name=".CheckOutActivity" />
-        <activity android:name=".ProductDetailActivity" />
-        <activity android:name=".CartActivity" />
+        <activity android:name=".Activity.ProductListActivity"></activity>
+        <activity android:name=".Activity.CheckOutActivity" />
+        <activity android:name=".Activity.ProductDetailActivity" />
+        <activity android:name=".Activity.CartActivity" />
         <activity
-            android:name=".AuthenticationActivity"
+            android:name=".Activity.AuthenticationActivity"
             android:windowSoftInputMode="adjustPan">
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

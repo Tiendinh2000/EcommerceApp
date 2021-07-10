@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import hanu.a2_1801040189.ProductDetailActivity;
+import hanu.a2_1801040189.Activity.ProductDetailActivity;
 import hanu.a2_1801040189.R;
 import hanu.a2_1801040189.data.dbs.CartCursorWrapper;
 import hanu.a2_1801040189.data.dbs.CartManager;
@@ -130,6 +130,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                             .setNeutralButton("OK", null)
                             .setIcon(android.R.drawable.ic_dialog_info)
                             .show();}
+
                     else {
                         new AlertDialog.Builder(context)
                                 .setTitle("Add to your Cart")

@@ -1,4 +1,4 @@
-package hanu.a2_1801040189;
+package hanu.a2_1801040189.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +15,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import hanu.a2_1801040189.Adapters.ProductListAdapter;
+import hanu.a2_1801040189.R;
 import hanu.a2_1801040189.models.Product;
 
 public class ProductListActivity extends AppCompatActivity {
@@ -27,20 +31,29 @@ public class ProductListActivity extends AppCompatActivity {
 
     private ProductListAdapter adapter;
 
-
+    private FirebaseAuth auth;
     ImageButton btn_search, btn_return;
     EditText input_search;
     RecyclerView recyclerView;
-
+TextView tv_accountName;
     ImageView i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        auth = FirebaseAuth.getInstance();
         btn_search = findViewById(R.id.btn_Search);
         input_search = findViewById(R.id.input_Search);
+        tv_accountName=findViewById(R.id.tv_accountName);
+
+        if (auth.getCurrentUser() != null){
+            Log.d("auth in avcitvity", "" + auth.getCurrentUser().getEmail().toString());
+        tv_accountName.setText("Hello "+ auth.getCurrentUser().getEmail().toString());}
+        else{
+            Log.d("auth in activity", "null");}
+
+
 
         RESTLoader task = (RESTLoader) new RESTLoader(new RESTLoader.AsyncResponse() {
             @Override
@@ -73,6 +86,9 @@ public class ProductListActivity extends AppCompatActivity {
                 Intent i = new Intent(this, CartActivity.class);
                 this.startActivity(i);
                 break;
+            case R.id.btn_Logout:
+                auth.signOut();
+                startActivity(new Intent(this, AuthenticationActivity.class));
             default:
                 break;
         }
@@ -148,4 +164,8 @@ public class ProductListActivity extends AppCompatActivity {
         });
     }
 
+    private void Autheticated() {
+        if (auth.getCurrentUser() == null)
+            this.finish();
+    }
 }

@@ -28,7 +28,7 @@ public class SignUpFragment extends Fragment {
 
 
     EditText edt_Xmail, edt_passWord, edt_confirm;
-    Button btn_signIn;
+    Button btn_signUp,btn_exit;
     FirebaseAuth auth;
     TextView tv_warning;
 
@@ -40,10 +40,13 @@ public class SignUpFragment extends Fragment {
         edt_Xmail = v.findViewById(R.id.edtXmail_SignUp);
         edt_passWord = v.findViewById(R.id.edtPassword_SignUp);
         edt_confirm = v.findViewById(R.id.edtConfirm_SignUp);
-        btn_signIn = v.findViewById(R.id.btnSignUp);
+        btn_signUp = v.findViewById(R.id.btnSignUp);
+        btn_exit=v.findViewById(R.id.btn_signUp_exit);
         tv_warning = v.findViewById(R.id.tv_warning);
         auth = FirebaseAuth.getInstance();
-        btn_signIn.setOnClickListener(new View.OnClickListener() {
+
+
+        btn_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userName = edt_Xmail.getText().toString();
@@ -56,24 +59,36 @@ public class SignUpFragment extends Fragment {
                         auth.createUserWithEmailAndPassword(userName, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful())
-                                    getFragmentManager().popBackStack();
+                                if (task.isSuccessful()){
+                                    tv_warning.setText("this xmail has been registed");}
                                 else
                                     Log.d("incorrect", "this xmail has been registed");
-                                tv_warning.setText("this xmail has been registed");
+
                             }
                         });
 
                     } else {
+                        tv_warning.setAlpha(1);
                         tv_warning.setText(validatePassword(password, confirm));
                     }
 
 
                 } else {
+                    tv_warning.setAlpha(1);
                     tv_warning.setText(validateXmail(userName));
                 }
             }
         });
+
+
+        btn_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
+
+
         return v;
     }
 

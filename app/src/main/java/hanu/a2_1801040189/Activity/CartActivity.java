@@ -1,4 +1,4 @@
-package hanu.a2_1801040189;
+package hanu.a2_1801040189.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hanu.a2_1801040189.Adapters.CartAdapter;
+import hanu.a2_1801040189.R;
 import hanu.a2_1801040189.data.dbs.CartCursorWrapper;
 import hanu.a2_1801040189.data.dbs.CartManager;
 import hanu.a2_1801040189.models.Product;
@@ -47,6 +49,7 @@ public class CartActivity extends AppCompatActivity {
 
         setList();
         setAdapter(list);
+        Log.d("list in cart:",list.toString());
         totalAllprice = getTotalAllPrice(list);
         //check if there is nothing in cart, display TextView
         if (totalAllprice == 0) {

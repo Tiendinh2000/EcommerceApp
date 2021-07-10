@@ -34,6 +34,7 @@ public class CartManager {
         String sql = "SELECT * FROM cart";
         Cursor cursor = db.rawQuery(sql, null);
         CartCursorWrapper cursorWrapper = new CartCursorWrapper(cursor);
+
         return cursorWrapper.getProducts();
     }
 
@@ -111,10 +112,7 @@ public class CartManager {
         try {
             Product p = getProduct(id);
             return p.getQuantity();
-//            Cursor cursor = db.rawQuery(sql, null);
-//            CartCursorWrapper wrapper = new CartCursorWrapper(cursor);
-//            Product p = wrapper.getProduct();
-//           return p.getQuantity();
+
         } catch (NullPointerException e) {
             return 0;
         }
@@ -133,10 +131,12 @@ public class CartManager {
     }
 
 public boolean removeOneProduct(int id){
-        ResetDeleteProduct();
+
         int removedOne = checkQuantity(id)-1;
         try{
             db.execSQL("UPDATE cart SET "+DBSchema.CartTable.Cols.QUAN+"="+removedOne+ " WHERE id="+id);
+            //everytime get data, all product with quantity=0 will be deleted.
+            ResetDeleteProduct();
             return true;
         }catch (Exception e){
             return false;
