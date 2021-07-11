@@ -122,27 +122,39 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 @Override
                 public void onClick(View v) {
                     int currentQuan = DB.checkQuantity(p.getId());
-                    if(currentQuan==0){
-                        DB.addProduct(p);
-                    new AlertDialog.Builder(context)
-                            .setTitle("Add Successfully!")
-                            .setMessage("Add 1 " + p.getName().substring(0, 15) + "... more into your cart!")
-                            .setNeutralButton("OK", null)
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .show();}
+                    Log.d("current quan:","current quan: "+currentQuan);
 
-                    else {
-                        new AlertDialog.Builder(context)
+                    if(currentQuan==0){
+
+                                                new AlertDialog.Builder(context)
                                 .setTitle("Add to your Cart")
                                 .setMessage(p.getName().substring(0, 10) + "... is not existed in your Cart! \r\nAre you sure you want to add this product?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        boolean edit = DB.addOneMoreProduct(p.getId());
+                                        DB.addProduct(p);
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, null)
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
+
+                    }
+
+                    else {
+
+                    new AlertDialog.Builder(context)
+                            .setTitle("Add Successfully!")
+                            .setMessage("Add 1 " + p.getName().substring(0, 15) + "... more into your cart!")
+                            .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DB.addOneMoreProduct(p.getId());
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .show();
+
+
 
 
                     }

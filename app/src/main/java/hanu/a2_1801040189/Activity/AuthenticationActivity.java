@@ -1,4 +1,4 @@
-package hanu.a2_1801040189;
+package hanu.a2_1801040189.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+import hanu.a2_1801040189.R;
 import hanu.a2_1801040189.ui.LoginFragment;
 
 public class AuthenticationActivity extends AppCompatActivity {
