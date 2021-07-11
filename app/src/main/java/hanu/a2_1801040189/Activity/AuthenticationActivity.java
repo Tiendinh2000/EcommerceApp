@@ -11,7 +11,7 @@ import hanu.a2_1801040189.ui.LoginFragment;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
-
+//dif
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
