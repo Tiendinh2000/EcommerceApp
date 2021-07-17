@@ -6,7 +6,7 @@
     <string name="totalPrice">&#160;Sum Price</string>
     <string name="total">Total:</string>
     <string name="emptyCart">Your Cart is empty</string>
-
+    <string name="map_key" translatable="false">AIzaSyCrc3kko-_9HvL6m9G-JNS8Yz6rv8vPtZU</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Strings related to login -->

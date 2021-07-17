@@ -1,12 +1,15 @@
 package hanu.a2_1801040189.Adapters;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,17 +18,22 @@ import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import hanu.a2_1801040189.Activity.CheckOutActivity;
+import hanu.a2_1801040189.Activity.ProductListActivity;
 import hanu.a2_1801040189.R;
 import hanu.a2_1801040189.data.dbs.CartManager;
 import hanu.a2_1801040189.models.Product;
+import hanu.a2_1801040189.models.User;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
     private List<Product> list;
+    FirebaseAuth auth;
 
     public CartAdapter(List list) {
         this.list = list;
@@ -58,7 +66,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
         TextView name, price, totalPrice, quantity;
         ImageView image;
         ImageButton addQuantity, removeQuantity;
-
+        Button btn_buyNow;
 
 
         public CartHolder(@NonNull View itemView, Context context) {
@@ -72,8 +80,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
             totalPrice = itemView.findViewById(R.id.totalPrice_productInCart);
             quantity = itemView.findViewById(R.id.tv_quantity);
             image = itemView.findViewById(R.id.image_productInCart);
-
-
+            btn_buyNow = itemView.findViewById(R.id.btn_buyNow);
+            auth = FirebaseAuth.getInstance();
         }
 
 
@@ -97,7 +105,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                     int currenTotalPrice = getCurrentTotalPrice();
                     boolean add = DB.addOneMoreProduct(p.getId());
                     quantity.setText(String.valueOf(currentQuan + 1));
-                    int newTotal=currenTotalPrice + pr;
+                    int newTotal = currenTotalPrice + pr;
                     totalPrice.setText(" $ " + String.valueOf(newTotal));
                     String inf = String.valueOf(pr);
                     sendLocalData("addPrice", inf);
@@ -118,17 +126,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
                         quantity.setText(String.valueOf(currentQuan - 1));
                         totalPrice.setText(" $ " + String.valueOf(currenTotalPrice - pr));
                         String information = String.valueOf(pr);
-                        sendLocalData("MinusPrice",information);
+                        sendLocalData("MinusPrice", information);
 
                     }
                 }
             });
 
+            btn_buyNow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userName = auth.getCurrentUser().getEmail();
+                    String userId = auth.getCurrentUser().getUid();
+                    Log.d("", "user: " + userName + " buy :" + p.getName() + "," + p.getId() + "" + p.getQuantity() + "," + p.getImage() + "," + p.getPrice() + "," + p.getDescription());
+                    Intent i = new Intent(context, CheckOutActivity.class);
+                    i.putExtra("userName", new User(userId, userName));
+                    i.putExtra("product", new Product(p.getId(), p.getName(), p.getImage(), pr, p.getQuantity()));
+                    context.startActivity(i);
+                }
+            });
 
         }
 
         /**
-         *
          * @return total current quantity of A product has been added
          */
         private int getCurrentQuantity() {
@@ -137,7 +156,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
         }
 
         /**
-         *
          * @return total current price of A product
          */
         private int getCurrentTotalPrice() {
@@ -157,12 +175,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartHolder> {
 
         /**
          * BroadcastReceiver : used to transit message from Adapter. The message is increase or decrease totalPrice
-         * @param name : name of message
-         * @param value : value need to be transited
          *
+         * @param name  : name of message
+         * @param value : value need to be transited
          */
 
-        private void sendLocalData(String name,String value){
+        private void sendLocalData(String name, String value) {
             Intent intent = new Intent("custom-message");
             intent.putExtra(name, value);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
